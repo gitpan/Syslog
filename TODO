@@ -1,0 +1,10 @@
+		    Things to do for Unix::Syslog
+		    =============================
+
+* Find a way to pass variable argument lists to subroutines. That
+  could help avoiding the substitution and the sprintf() in the syslog
+  wrapper.
+
+Anything else? I will apprechiate your suggestions.
+
+Marcus Harnisch <marcus@harnisch.isdn.cs.tu-berlin.de>

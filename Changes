@@ -1,0 +1,11 @@
+Revision history for Perl extension Unix::Syslog.
+
+0.91  Sun Oct 24 17:47:03 1999
+	- (README): Minor corrections
+
+0.90  Sun Feb 20 19:32:34 1999
+        - Finally finished documentation
+
+0.01  Thu Aug  6 20:51:16 1998
+	- original version; created by h2xs 1.18
+
