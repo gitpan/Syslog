@@ -1,4 +1,4 @@
-# $Id: Syslog.pm,v 1.4 2000/08/20 21:27:19 marcus Exp $
+# $Id: Syslog.pm,v 1.6 2001/02/08 03:15:45 marcus Exp $
 #
 # Copyright (C) 1999,2000 Marcus Harnisch <marcus.harnisch@gmx.net>
 #
@@ -41,7 +41,7 @@ require AutoLoader;
 				LOG_PRI LOG_UPTO LOG_MAKEPRI)],
 		"subs"  => [qw(closelog openlog syslog setlogmask)]);
 
-$VERSION = '0.94';
+$VERSION = '0.95';
 
 bootstrap Unix::Syslog $VERSION;
 
@@ -51,9 +51,12 @@ sub syslog($$@) {
     my $priority = shift;
     my $format   = shift;
 
-    $format =~ s/%m/$!/g;
+    $format =~ s/((?:[^%]|^)(?:%%)*)%m/$1$!/g;
 
-    _isyslog($priority, sprintf($format, @_));
+    my $msg =  sprintf($format,@_);
+    $msg =~ s/%/%%/g;
+
+    _isyslog($priority, $msg);
 }
 
 # openlog, closelog and setlogmask don't need a wrapper

@@ -6,7 +6,7 @@
 # Change 1..1 below to 1..last_test_to_print .
 # (It may become useful if the test is moved to ./t subdirectory.)
 
-$number_of_tests = 44;
+$number_of_tests = 50;
 
 BEGIN { $| = 1; print "1..$number_of_tests\n"; }
 END {print "not ok 1\n" unless $loaded;}
@@ -115,10 +115,17 @@ the facility `local7' and the priority `info'.
 EOM
 
 print "openlog\n";
-openlog("test.pl", LOG_PID, LOG_LOCAL7);
+openlog("Unix::Syslog testsuite", LOG_PID, LOG_LOCAL7);
 
 print "syslog\n";
-syslog(LOG_INFO, "Testing Perl module Unix::Syslog. Test number %d", $n++);
+syslog(LOG_INFO, "Test %d", $n++);
+syslog(LOG_INFO, "This message prints a format string: %m (Test %d)", $n++);
+syslog(LOG_INFO, "This message prints a percent sign followed by the character \`m\': %%m (Test %d)", $n++);
+syslog(LOG_INFO, "This message prints a percent sign followed by a format string: %%%m (Test %d)", $n++);
+
+syslog(LOG_INFO, "This message prints a percent sign followed by the character \`m\': %s (Test %d)", '%m', $n++);
+syslog(LOG_INFO, "This message prints two percent signs followed by the character \`m\': %s (Test %d)", '%%m', $n++);
+syslog(LOG_INFO, "This message prints three percent signs followed by the character \`m\': %s (Test %d)", '%%%m', $n++);
 
 print "closelog\n\n";
 closelog;

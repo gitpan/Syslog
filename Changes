@@ -2,6 +2,18 @@
 
 Revision history for Perl extension Unix::Syslog.
 
+0.95  Wed Feb 07 21:43:00 2001
+        - (Syslog.pm) Fixed a message formatting bug in the syslog()
+          wrapper (reported by Eric Kuzniar <kuzniar@server.airchek.com>
+	  and partly fixed by Mike DeVaynes
+	  <mike@radon.com>). Multiple expansion (sprintf,syslog) of
+	  format string and arguments, in some cases resulted in
+	  malformed messages.
+
+	- (test.pl) Added some tests related to that bug fix 
+
+        - (README) Added some details about the test suite.
+
 0.94  Sun Aug 20 23:25:00 2000
 	- (Makefile.PL) Added '-lc' to LIBS which seems to be
           necessary to compile Unix::Syslog on NEC EWS4800 machines

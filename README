@@ -33,10 +33,19 @@ perl Makefile.PL
 make test
 make install
 
-Note: Some tests may fail because the respective constants are not
+Notes about the test suite
+==========================
+
+Some of the tests may fail because the respective constants are not
 available on certain systems. You should be able to distinguish these
 tests from those that fail because of a malfunction by carefully
 reading the output of the test routines.
+
+The tests that write messages to syslog cannot return a success status
+since the underlying libc functions don't return appropriate
+information. To verify that these tests work correctly, you should
+configure syslogd so that the facility `local7' and priority `info'
+will be written to a file.
 
 OS dependent behaviour and portability
 ======================================
