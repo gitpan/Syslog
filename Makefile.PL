@@ -4,7 +4,7 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     'NAME'	=> 'Unix::Syslog',
     'VERSION_FROM' => 'Syslog.pm', # finds $VERSION
-    'LIBS'	=> [''],   # e.g., '-lm' 
+    'LIBS'	=> ['-lc'],   # e.g., '-lm' 
     'DEFINE'	=> '',     # e.g., '-DHAVE_SOMETHING' 
     'INC'	=> '',     # e.g., '-I/usr/include/other' 
 );

@@ -1,4 +1,16 @@
+-*- mode: text -*-
+
 Revision history for Perl extension Unix::Syslog.
+
+0.94  Sun Aug 20 23:25:00 2000
+	- (Makefile.PL) Added '-lc' to LIBS which seems to be
+          necessary to compile Unix::Syslog on NEC EWS4800 machines
+          (reported by Oota Toshiya <oota@ppd.fc.nec.co.jp>).
+
+        - (Syslog.pm) Fixed severe bug in documentation of
+          setlogmask() and the according macros.
+
+        - (README) FAQ synched with pod section in Syslog.pm
 
 0.93  Wed Mar 15 19:20:40 2000
         - Changed author's e-mail address to <marcus.harnisch@gmx.net>

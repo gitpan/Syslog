@@ -1,4 +1,4 @@
-# $Id: Syslog.pm,v 1.3 2000/03/15 18:19:28 marcus Exp $
+# $Id: Syslog.pm,v 1.4 2000/08/20 21:27:19 marcus Exp $
 #
 # Copyright (C) 1999,2000 Marcus Harnisch <marcus.harnisch@gmx.net>
 #
@@ -41,7 +41,7 @@ require AutoLoader;
 				LOG_PRI LOG_UPTO LOG_MAKEPRI)],
 		"subs"  => [qw(closelog openlog syslog setlogmask)]);
 
-$VERSION = '0.93';
+$VERSION = '0.94';
 
 bootstrap Unix::Syslog $VERSION;
 
@@ -138,10 +138,11 @@ closes the connection to the system logger.
 
 =item setlogmask $mask_priority
 
-sets the priority mask and returns the old mask. Subsequent calls to
-C<syslog()> are only logged if their priority is not masked. Macros
-are provided to obtain valid and portable arguments to
-C<setlogmask()>.
+sets the priority mask and returns the old mask. Logging is enabled
+for the priorities indicated by the bits in the mask that are set and
+is disabled where the bits are not set. Macros are provided to specify
+valid and portable arguments to C<setlogmask()>. Usually the default
+log mask allows all messages to be logged.
 
 =back
 
@@ -164,11 +165,12 @@ Generate log message of specified priority using a printf-type formatted
 string:
   C<syslog LOG_INFO, "This is message number %d", 42;>
 
-Set log priority mask to block all messages of priority C<LOG_DEBUG>:
+Set log priority mask to block all messages but those of priority
+C<LOG_DEBUG>:
   C<$oldmask = setlogmask(LOG_MASK(LOG_DEBUG))>
 
-Set log priority mask to block all messages with a priority less or
-equal to C<LOG_ERR>:
+Set log priority mask to block all messages with a higher priority than
+C<LOG_ERR>:
   C<$oldmask = setlogmask(LOG_UPTO(LOG_ERR))>
 
 Close channel to syslogd:
@@ -180,7 +182,7 @@ Close channel to syslogd:
 
 =item 1.
 
-What is the benefit from using this module instead of Sys::Syslog?
+What is the benefit of using this module instead of Sys::Syslog?
 
 Sys::Syslog always opens a network connection to the syslog
 service. At least on Linux systems this may lead to some trouble,
@@ -205,6 +207,23 @@ already received from the network to other log hosts. There are
 reasons not to enable this option unless it is really
 necessary. Looping messages resulting from a misconfiguration may
 break down your (log-)system.
+
+=back
+
+Peter Stamfest <peter.stamfest@eunet.at> pointed out some other
+advantages of Unix::Syslog, I didn't came across my self.
+
+=over
+
+=item *
+
+LOG_PERROR works.
+
+=item *
+
+works with perl -Tw without warnings and problems due to tainted data
+as it is the case for Sys::Syslog in some special
+applications. [Especially when running a script as root]
 
 =back
 
