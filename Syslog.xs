@@ -12,9 +12,9 @@ extern "C" {
 
 MODULE = Unix::Syslog	PACKAGE = Unix::Syslog
 
- # $Id: Syslog.xs,v 1.2 1999/10/24 20:29:19 marcus Exp $
+ # $Id: Syslog.xs,v 1.3 2000/03/15 18:18:23 marcus Exp $
  #
- # Copyright (C) 1999 Marcus Harnisch <marcus@harnisch.isdn.cs.tu-berlin.de>
+ # Copyright (C) 1999,2000 Marcus Harnisch <marcus.harnisch@gmx.net>
  #
  # This program is free software; you can redistribute it and/or modify
  # it under the terms of the Artistic License. A copy of the license (see

@@ -1,5 +1,13 @@
 Revision history for Perl extension Unix::Syslog.
 
+0.93  Wed Mar 15 19:20:40 2000
+        - Changed author's e-mail address to <marcus.harnisch@gmx.net>
+
+        - Synched the version number of the module with the actual
+	  version of Unix::Syslog
+
+        - Fixed some typos in the documentation
+
 0.92  Sun Nov 28 15:24:15 1999
 	- (README): Corrected a big howler and some other stuff
 

@@ -1,6 +1,6 @@
-# $Id: Syslog.pm,v 1.2 1999/10/24 20:28:31 marcus Exp $
+# $Id: Syslog.pm,v 1.3 2000/03/15 18:19:28 marcus Exp $
 #
-# Copyright (C) 1999 Marcus Harnisch <marcus@harnisch.isdn.cs.tu-berlin.de>
+# Copyright (C) 1999,2000 Marcus Harnisch <marcus.harnisch@gmx.net>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the Artistic License. A copy of the license (see
@@ -41,7 +41,7 @@ require AutoLoader;
 				LOG_PRI LOG_UPTO LOG_MAKEPRI)],
 		"subs"  => [qw(closelog openlog syslog setlogmask)]);
 
-$VERSION = '0.91';
+$VERSION = '0.93';
 
 bootstrap Unix::Syslog $VERSION;
 
@@ -83,9 +83,9 @@ Perl's XSUBs. The implementation attempts to resemble the native
 libc-functions of your system, so that anyone being familiar with
 F<syslog.h> should be able to use this module right away.
 
-As this module in contrary to Sys::Syslog(3) does not open a network
-connection to send the messages, they can be forwarded by syslogd (see
-L<"FAQ">).
+In contrary to Sys::Syslog(3), this modules does not open a network
+connection to send the messages. This can help you to avoid opening
+security holes in your computer (see L<"FAQ">).
 
 The subs imported by the tag C<macros> are simply wrappers around the
 most important C<#defines> in your system's C header file
@@ -183,25 +183,34 @@ Close channel to syslogd:
 What is the benefit from using this module instead of Sys::Syslog?
 
 Sys::Syslog always opens a network connection to the syslog
-service. At least on Linux systems this leads to some trouble, because
+service. At least on Linux systems this may lead to some trouble,
+because
 
-- Linux syslogd (from package sysklogd) for does not listen to
-the network by default. Most people working on stand-alone machines
-(including me) didn't see any reason why to enable this option. Others
-didn't enable it for security reasons.
+=over 4
+
+=item *
+
+Linux syslogd (from package sysklogd) does not listen to the network
+by default. Most people working on stand-alone machines (including me)
+didn't see any reason why to enable this option. Others didn't enable
+it for security reasons.
 
 OS-independent, some sysadmins may run a firewall on their network
 that blocks connections to port 514/udp.
 
-- By default Linux syslogd doesn't forward messages which were
+=item *
+
+By default Linux syslogd doesn't forward messages which have already
 already received from the network to other log hosts. There are
 reasons not to enable this option unless it is really
-neccessary. Looping messages resulting from a misconfiguration may
+necessary. Looping messages resulting from a misconfiguration may
 break down your (log-)system.
+
+=back
 
 =item 2.
 
-Well, is there any reason to use Sys:Syslog any longer?
+Well, is there any reason to use Sys::Syslog any longer?
 
 Yes! In contrary to Unix::Syslog, Sys::Syslog works even if you don't
 have a syslog daemon running on your system as long as you are
@@ -219,7 +228,7 @@ of Sys::Syslog?
 Currently not. Sys::Syslog requires strings to specify many of the
 arguments to the functions, while Unix::Syslog uses numeric constants
 accessed via macros as defined in F<syslog.h>. Although the strings
-used by Sys:Syslog are also defined in F<syslog.h>, it seems that most
+used by Sys::Syslog are also defined in F<syslog.h>, it seems that most
 people got used to the numeric arguments. I will implement the string
 based calls if there are enough people (I<$min_people> > 10**40)
 complaining about the lack of compatibility.
@@ -232,6 +241,6 @@ syslog(3), Sys::Syslog(3), syslogd(8), perl(1)
 
 =head1 AUTHOR
 
-Marcus Harnisch <marcus@harnisch.isdn.cs.tu-berlin.de>
+Marcus Harnisch <marcus.harnisch@gmx.net>
 
 =cut

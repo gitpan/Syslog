@@ -1,7 +1,7 @@
        Unix::Syslog -- Perl interface to the UNIX system logger
        ========================================================
 
-Copyright (C) 1999 Marcus Harnisch <marcus@harnisch.isdn.cs.tu-berlin.de>
+Copyright (C) 1999,2000 Marcus Harnisch
 
 Introduction
 ============
@@ -9,7 +9,7 @@ Introduction
 This Module provides access to the system logger available on most
 UNIX system via Perl's XSUBs (Perl's C interface).
 
-I wrote this module because of some features I missed in Sys:Syslog
+I wrote this module because of some features I missed in Sys::Syslog
 (see FAQ below) and also to do my first steps into the secrets of
 Perl's XSUBs.
 
@@ -57,48 +57,56 @@ Linux	On systems using glibc2 (<= version 2.1),  None possible.
 Frequently Asked Questions
 ==========================
 
-1. What is the benefit I get from using this module instead of
-   Sys::Syslog?
+1.   What is the benefit from using this module instead of
+     Sys::Syslog?
 
-   o Sys::Syslog always opens a network connection to the syslog
-     service. At least on Linux systems this leads into some trouble,
-     because
+     Sys::Syslog always opens a network connection to the
+     syslog service. At least on Linux systems this may 
+     lead to some trouble, because
 
-     - Linux syslogd (from package sysklogd) does not listen to the
-       network by default. Most people working on stand-alone machines
-       (including me) don't see any reason to enable this option just to
-       make a single application work. Others don't enable it for
-       security reasons.
-     
-     - By default Linux syslogd doesn't forward messages to other log
-       hosts which have already been received from the network. There
-       are reasons not to enable this option unless it is really 
-       neccessary. Looping messages resulting from a faulty
-       configuration may break down your (log-)system.
+     o   Linux syslogd (from package sysklogd) does not
+         listen to the network by default. Most people
+         working on stand-alone machines (including me)
+         didn't see any reason why to enable this option.
+         Others didn't enable it for security reasons.
 
-   o The interface resembles that of the syslog(3) routines.
+         OS-independent, some sysadmins may run a firewall
+         on their network that blocks connections to port
+         514/udp.
 
-2. Is there any reason to use Sys:Syslog any longer?
+     o   By default Linux syslogd doesn't forward messages
+         which have already been received from the network to
+         other log hosts. There are reasons not to enable
+         this option unless it is really necessary.
+         Looping messages resulting from a
+         misconfiguration may break down your
+         (log-)system.
 
-   Yes! In contrary to Unix::Syslog, Sys::Syslog works even if you are
-   not running a syslog daemon on your system as long as you are
-   connected to a log host via a network and have access to the
-   syslog.h header file of your log host to generate the header files
-   for Sys::Syslog (see Sys::Syslog(3) for details). Unix::Syslog only
-   logs to your local syslog daemon which in turn may be configured to
-   distribute the message over the network.
+2.   Well, is there any reason to use Sys::Syslog any
+     longer?
 
-3. Are calls to the functions provided by Unix::Syslog compatible to
-   those of Sys::Syslog?
+     Yes! In contrary to Unix::Syslog, Sys::Syslog works
+     even if you don't have a syslog daemon running on
+     your system as long as you are connected to a log
+     host via a network and have access to the syslog.h
+     header file of your log host to generate the initial
+     files for Sys::Syslog (see Sys::Syslog(3) for
+     details). Unix::Syslog only logs to your local syslog
+     daemon which in turn may be configured to distribute
+     the message over the network.
 
-   Currently not. Sys::Syslog requires strings to specify many of the
-   arguments to the functions, while Unix::Syslog uses numeric constants
-   accessed via macros as defined in syslog.h. Although the strings
-   used by Sys::Syslog are also defined in syslog.h, it seems that most
-   people got used to the numeric arguments. I will implement
-   the string based calls if there are enough people ($min_people >
-   10**40) complaining about the lack of compatibility. However,
-   patches are welcome.
+3.   Are calls to the functions provided by Unix::Syslog
+     compatible to those of Sys::Syslog?
+
+     Currently not. Sys::Syslog requires strings to
+     specify many of the arguments to the functions, while
+     Unix::Syslog uses numeric constants accessed via
+     macros as defined in syslog.h. Although the strings
+     used by Sys::Syslog are also defined in syslog.h, it
+     seems that most people got used to the numeric
+     arguments. I will implement the string based calls if
+     there are enough people ($min_people > 10**40)
+     complaining about the lack of compatibility.
 
 Comments, Bug reports and Suggestions
 =====================================
@@ -107,4 +115,4 @@ Please direct anything you wish to tell me about this package to the
 address given below.
 
 Have fun,
-     Marcus Harnisch <marcus@harnisch.isdn.cs.tu-berlin.de>
+     Marcus Harnisch <marcus.harnisch@gmx.net>
