@@ -49,13 +49,10 @@ wish to run the software on. Then modify your program accordingly.
 Known bugs
 ==========
 
-OS	Description				Workaround
+OS	Description				   Workaround
 ---------------------------------------------------------------------------
-Linux	On systems using glibc2, setting the    None possible.
-	log mask does not change the behaviour
-	of syslog() as expected until recent
-	versions of glibc (> version 2.1)
-
+Linux	On systems using glibc2 (<= version 2.1),  None possible.
+        setting the log mask has no effect.
 
 Frequently Asked Questions
 ==========================
@@ -63,23 +60,23 @@ Frequently Asked Questions
 1. What is the benefit I get from using this module instead of
    Sys::Syslog?
 
-   Sys::Syslog always opens a network connection to the syslog
-   service. At least on Linux systems this leads into some trouble,
-   because
+   o Sys::Syslog always opens a network connection to the syslog
+     service. At least on Linux systems this leads into some trouble,
+     because
 
-   - Linux syslogd (from package sysklogd) does not listen to the
-     network by default. Most people working on stand-alone machines
-     (including me) don't see any reason to enable this option just to
-     make a single application work. Others don't enable it for
-     security reasons.
+     - Linux syslogd (from package sysklogd) does not listen to the
+       network by default. Most people working on stand-alone machines
+       (including me) don't see any reason to enable this option just to
+       make a single application work. Others don't enable it for
+       security reasons.
+     
+     - By default Linux syslogd doesn't forward messages to other log
+       hosts which have already been received from the network. There
+       are reasons not to enable this option unless it is really 
+       neccessary. Looping messages resulting from a faulty
+       configuration may break down your (log-)system.
 
-   - By default Linux syslogd doesn't forward messages to other log
-     hosts which have already been received from the network. There
-     are reasons not to enable this option unless it is really 
-     neccessary. Looping messages resulting from a faulty
-     configuration may break down your (log-)system.
-
-   - The interface resembles that of the syslog(3) routines.
+   o The interface resembles that of the syslog(3) routines.
 
 2. Is there any reason to use Sys:Syslog any longer?
 
