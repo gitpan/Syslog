@@ -6,7 +6,7 @@
 # Change 1..1 below to 1..last_test_to_print .
 # (It may become useful if the test is moved to ./t subdirectory.)
 
-$number_of_tests = 50;
+$number_of_tests = 55;
 
 BEGIN { $| = 1; print "1..$number_of_tests\n"; }
 END {print "not ok 1\n" unless $loaded;}
@@ -126,6 +126,16 @@ syslog(LOG_INFO, "This message prints a percent sign followed by a format string
 syslog(LOG_INFO, "This message prints a percent sign followed by the character \`m\': %s (Test %d)", '%m', $n++);
 syslog(LOG_INFO, "This message prints two percent signs followed by the character \`m\': %s (Test %d)", '%%m', $n++);
 syslog(LOG_INFO, "This message prints three percent signs followed by the character \`m\': %s (Test %d)", '%%%m', $n++);
+
+print "setlogmask\n";
+setlogmask(LOG_MASK(LOG_INFO));
+syslog(LOG_INFO,  "(LOG_MASK) This message should be visible (Test %d)\n", $n++);
+syslog(LOG_EMERG, "(LOG_MASK) This message should NOT be visible (Test %d)\n", $n++);
+
+setlogmask(LOG_UPTO(LOG_INFO));
+syslog(LOG_INFO,    "(LOG_UPTO) This message should be visible (Test %d)\n", $n++);
+syslog(LOG_EMERG,   "(LOG_UPTO) This message should be visible (Test %d)\n", $n++);
+syslog((LOG_INFO()+1), "(LOG_UPTO) This message should NOT be visible (Test %d)\n", $n++);
 
 print "closelog\n\n";
 closelog;
