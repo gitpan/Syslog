@@ -114,28 +114,43 @@ the facility `local7' and the priority `info'.
 
 EOM
 
+sub basename {
+  my $name = shift;
+  $name =~ s@.*/@@;
+  return $name;
+}
+
 print "openlog\n";
-openlog("Unix::Syslog testsuite", LOG_PID, LOG_LOCAL7);
+openlog(basename($0), LOG_PID, LOG_LOCAL7);
 
 print "syslog\n";
-syslog(LOG_INFO, "Test %d", $n++);
-syslog(LOG_INFO, "This message prints a format string: %m (Test %d)", $n++);
-syslog(LOG_INFO, "This message prints a percent sign followed by the character \`m\': %%m (Test %d)", $n++);
-syslog(LOG_INFO, "This message prints a percent sign followed by a format string: %%%m (Test %d)", $n++);
+syslog(LOG_INFO, "Unix::Syslog testsuite: The ident string should be \`%s\' (Test %d)", basename($0), $n++);
+syslog(LOG_INFO, "Unix::Syslog testsuite: Testing quote character \`%%\' (Test %d)", $n++);
+syslog(LOG_INFO, "Unix::Syslog testsuite: This message prints an error message: %m (Test %d)", $n++);
+syslog(LOG_INFO, "Unix::Syslog testsuite: This message prints a percent sign followed by the character \`m\': %%m (Test %d)", $n++);
+syslog(LOG_INFO, "Unix::Syslog testsuite: This message prints a percent sign followed by an error message: %%%m (Test %d)", $n++);
 
-syslog(LOG_INFO, "This message prints a percent sign followed by the character \`m\': %s (Test %d)", '%m', $n++);
-syslog(LOG_INFO, "This message prints two percent signs followed by the character \`m\': %s (Test %d)", '%%m', $n++);
-syslog(LOG_INFO, "This message prints three percent signs followed by the character \`m\': %s (Test %d)", '%%%m', $n++);
+syslog(LOG_INFO, "Unix::Syslog testsuite: This message prints a percent sign followed by the character \`m\': %s (Test %d)", '%m', $n++);
+syslog(LOG_INFO, "Unix::Syslog testsuite: This message prints two percent signs followed by the character \`m\': %s (Test %d)", '%%m', $n++);
+syslog(LOG_INFO, "Unix::Syslog testsuite: This message prints three percent signs followed by the character \`m\': %s (Test %d)", '%%%m', $n++);
 
 print "setlogmask\n";
 setlogmask(LOG_MASK(LOG_INFO));
-syslog(LOG_INFO,  "(LOG_MASK) This message should be visible (Test %d)\n", $n++);
-syslog(LOG_EMERG, "(LOG_MASK) This message should NOT be visible (Test %d)\n", $n++);
+
+print "syslog\n";
+syslog(LOG_INFO,  "Unix::Syslog testsuite: (LOG_MASK) This message should be visible (Test %d)\n", $n++);
+syslog(LOG_EMERG, "Unix::Syslog testsuite: (LOG_MASK) This message should NOT be visible (Test %d)\n", $n++);
 
 setlogmask(LOG_UPTO(LOG_INFO));
-syslog(LOG_INFO,    "(LOG_UPTO) This message should be visible (Test %d)\n", $n++);
-syslog(LOG_EMERG,   "(LOG_UPTO) This message should be visible (Test %d)\n", $n++);
-syslog((LOG_INFO()+1), "(LOG_UPTO) This message should NOT be visible (Test %d)\n", $n++);
+syslog(LOG_INFO,    "Unix::Syslog testsuite: (LOG_UPTO) This message should be visible (Test %d)\n", $n++);
+syslog(LOG_EMERG,   "Unix::Syslog testsuite: (LOG_UPTO) This message should be visible (Test %d)\n", $n++);
+syslog((LOG_INFO()+1), "Unix::Syslog testsuite: (LOG_UPTO) This message should NOT be visible (Test %d)\n", $n++);
 
 print "closelog\n\n";
 closelog;
+
+print "Testing pointer handling in closelog().\n";
+print "Calling closelog() a second time.\n";
+closelog;
+print "This message should not be preceeded by an error message\n";
+print "   about dereferenced pointers.\n\n";

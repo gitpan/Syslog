@@ -10,9 +10,11 @@ extern "C" {
 
 #include <syslog.h>
 
+static SV *ident_svptr;
+
 MODULE = Unix::Syslog	PACKAGE = Unix::Syslog
 
- # $Id: Syslog.xs,v 1.3 2000/03/15 18:18:23 marcus Exp $
+ # $Id: Syslog.xs,v 1.4 2001/12/12 03:38:50 marcus Exp $
  #
  # Copyright (C) 1999,2000 Marcus Harnisch <marcus.harnisch@gmx.net>
  #
@@ -180,9 +182,13 @@ OUTPUT:
  # Open connection to system logger
 void
 openlog(ident, option, facility)
-	char *ident
+	char* ident
 	int   option
 	int   facility
+	CODE:
+ 	ident_svptr = ST(0);
+ 	SvREFCNT_inc(ident_svptr);
+	openlog(ident, option, facility);
 
  # Internal function to generate Log message
 void
@@ -196,7 +202,12 @@ CODE:
 int
 setlogmask(mask)
 	int mask
+	CODE:
+	setlogmask(mask);
 
  # Close connection to system logger
 void
 closelog()
+	CODE:
+	closelog();
+	if (SvREFCNT(ident_svptr)) SvREFCNT_dec(ident_svptr);
